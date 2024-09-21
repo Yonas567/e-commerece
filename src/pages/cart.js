@@ -3,12 +3,11 @@ import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
 
 function Cart() {
-  const { cartItems, removeFromCart } = useContext(CartContext);
+  const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity } =
+    useContext(CartContext);
 
-  const total = cartItems.reduce(
-    (acc, item) => acc + parseFloat(item.price.slice(1)),
-    0
-  );
+  // Update total calculation: no need for slice, just use the price directly
+  const total = cartItems.reduce((acc, item) => acc + item.price, 0);
 
   return (
     <div>
@@ -20,12 +19,15 @@ function Cart() {
           <ul>
             {cartItems.map((item) => (
               <li key={item.id}>
-                {item.name} - {item.price}
+                {item.name} - ${item.price.toFixed(2)}{" "}
+                {/* Ensure the price is formatted */}
+                <button onClick={() => increaseQuantity(item.id)}>+</button>
+                <button onClick={() => decreaseQuantity(item.id)}>-</button>
                 <button onClick={() => removeFromCart(item.id)}>Remove</button>
               </li>
             ))}
           </ul>
-          <h2>Total: ${total.toFixed(2)}</h2>
+          <h2>Total: ${total.toFixed(2)}</h2> {/* Ensure total is formatted */}
           <Link to="/checkout">Proceed to Checkout</Link>
         </div>
       )}

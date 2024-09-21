@@ -1,34 +1,26 @@
-import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { CartContext } from "../context/CartContext";
+import products from "../data/products"; // Your product data
+import { useNavigate } from "react-router-dom";
 
-function Home() {
-  const { cartItems } = useContext(CartContext);
-
-  const products = [
-    { id: 1, name: "Laptop", price: "$1200" },
-    { id: 2, name: "Smartphone", price: "$800" },
-    { id: 3, name: "Headphones", price: "$200" },
-    { id: 4, name: "Camera", price: "$500" },
-  ];
-
+const Home = () => {
+  const navigate = useNavigate();
   return (
     <div>
-      <nav>
-        <Link to="/cart">Go to Cart ({cartItems.length})</Link>
-      </nav>
-      <h1>Our Products</h1>
-      <ul>
+      <button onClick={() => navigate("/cart")}>Go to cart</button>
+      <h1>Products</h1>
+      <div className="product-list">
         {products.map((product) => (
-          <li key={product.id}>
+          <div key={product.id} className="product-item">
             <Link to={`/product/${product.id}`}>
-              {product.name} - {product.price}
+              <h2>{product.name}</h2>
+              <img src={product.imageUrl} alt={product.name} />
+              <p>Price: ${product.price}</p>
             </Link>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
-}
+};
 
 export default Home;

@@ -20,10 +20,31 @@ export const CartProvider = ({ children }) => {
   const clearCart = () => {
     setCartItems([]); // Clear the cart by setting cartItems to an empty array
   };
+  const increaseQuantity = (id) => {
+    setCartItems((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      )
+    );
+  };
+  const decreaseQuantity = (id) => {
+    setCartItems((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+      )
+    );
+  };
 
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, clearCart }}>
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        clearCart,
+        increaseQuantity,
+        decreaseQuantity,
+      }}>
       {children}
     </CartContext.Provider>
   );

@@ -6,10 +6,7 @@ function Checkout() {
   const { cartItems } = useContext(CartContext);
   const navigate = useNavigate();
 
-  const total = cartItems.reduce(
-    (acc, item) => acc + parseFloat(item.price.slice(1)),
-    0
-  );
+  const total = cartItems.reduce((acc, item) => acc + item.price, 0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
