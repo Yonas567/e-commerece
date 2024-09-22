@@ -6,8 +6,11 @@ function Cart() {
   const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity } =
     useContext(CartContext);
 
-  // Update total calculation: no need for slice, just use the price directly
-  const total = cartItems.reduce((acc, item) => acc + item.price, 0);
+  // Calculate total by considering the quantity of each item
+  const total = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   return (
     <div>
@@ -19,15 +22,15 @@ function Cart() {
           <ul>
             {cartItems.map((item) => (
               <li key={item.id}>
-                {item.name} - ${item.price.toFixed(2)}{" "}
-                {/* Ensure the price is formatted */}
+                {item.name} - ${item.price.toFixed(2)} x {item.quantity}
                 <button onClick={() => increaseQuantity(item.id)}>+</button>
                 <button onClick={() => decreaseQuantity(item.id)}>-</button>
                 <button onClick={() => removeFromCart(item.id)}>Remove</button>
               </li>
             ))}
           </ul>
-          <h2>Total: ${total.toFixed(2)}</h2> {/* Ensure total is formatted */}
+          <h2>Total: ${total.toFixed(2)}</h2>{" "}
+          {/* Total with quantity considered */}
           <Link to="/checkout">Proceed to Checkout</Link>
         </div>
       )}
