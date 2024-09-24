@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { CartContext } from "../context/CartContext";
-import products from "../data/products"; // Assuming you have a products data file
+import products from "../data/products";
+//Assuming you have a products data file
 
 const ProductDetail = () => {
   const { id } = useParams();
