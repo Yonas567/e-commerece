@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Checkout() {
   const { cartItems } = useContext(CartContext);
   const navigate = useNavigate();
-
+  const location = useLocation();
   const total = cartItems.reduce((acc, item) => acc + item.price, 0);
 
   const handleSubmit = (e) => {

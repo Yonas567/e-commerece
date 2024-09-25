@@ -1,26 +1,47 @@
 import { Link } from "react-router-dom";
 import products from "../data/products"; // Your product data
 import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react"; // Correct import statement for useContext
 
-const Home = () => {
+import { UserContext } from "../context/UserContext"; // Make sure the path is correct
+
+function Home() {
   const navigate = useNavigate();
+  const { user, logout } = useContext(UserContext);
   return (
     <div>
-      <button onClick={() => navigate("/cart")}>Go to cart</button>
-      <h1>Products</h1>
-      <div className="product-list">
-        {products.map((product) => (
-          <div key={product.id} className="product-item">
-            <Link to={`/product/${product.id}`}>
-              <h2>{product.name}</h2>
-              <img src={product.imageUrl} alt={product.name} />
-              <p>Price: ${product.price}</p>
-            </Link>
+      <div>
+        <h1>Welcome to the Store</h1>
+        {user ? (
+          <div>
+            <p>Hello, {user.username}!</p>
+            <button onClick={logout}>Logout</button>
           </div>
-        ))}
+        ) : (
+          <div>
+            <p>Please sign up or log in.</p>
+            <button onClick={() => navigate("/login")}>Login</button>
+            <button onClick={() => navigate("/signup")}>Signup</button>
+          </div>
+        )}
+      </div>
+      <div>
+        <button onClick={() => navigate("/cart")}>Go to cart</button>
+        <h1>Products</h1>
+        <div className="product-list">
+          {products.map((product) => (
+            <div key={product.id} className="product-item">
+              <Link to={`/product/${product.id}`}>
+                <h2>{product.name}</h2>
+                <img src={product.imageUrl} alt={product.name} />
+                <p>Price: ${product.price}</p>
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
-};
+}
 
 export default Home;
