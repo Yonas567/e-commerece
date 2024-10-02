@@ -6,11 +6,12 @@ import { useLocation } from "react-router-dom";
 function Checkout() {
   const { cartItems } = useContext(CartContext);
   const navigate = useNavigate();
-  const location = useLocation();
+
   const total = cartItems.reduce((acc, item) => acc + item.price, 0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     // For now, we'll just navigate to an order summary after "payment"
     navigate("/order-summary");
   };

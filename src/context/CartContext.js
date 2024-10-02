@@ -8,7 +8,6 @@ export const CartProvider = ({ children }) => {
   const addToCart = (product) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => item.id === product.id);
-      console.log(product.id);
 
       if (existingItem) {
         // If the item already exists, increase its quantity
