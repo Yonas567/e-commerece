@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { UserContext } from "../context/UserContext";
-
+import { CartContext } from "../context/CartContext";
 function OrderHistory() {
   const { user } = useContext(UserContext);
-
+  const { cartItems } = useContext(CartContext);
   // For demonstration, we'll use hardcoded orders.
   // Later, this can be fetched from a backend or saved locally.
   const orders = [
@@ -36,7 +36,7 @@ function OrderHistory() {
         <ul>
           {orders.map((order) => (
             <li key={order.id}>
-              <h2>Order placed on {order.date}</h2>
+              <h2>Order placed on {cartItems.name}</h2>
               <ul>
                 {order.items.map((item, index) => (
                   <li key={index}>

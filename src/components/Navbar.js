@@ -12,12 +12,7 @@ function Navbar() {
         <li>
           <Link to="/cart">Cart</Link>
         </li>
-        <li>
-          <Link to="/checkout">Checkout</Link>
-        </li>
-        <li>
-          <Link to="/order-summary">Order Summary</Link>
-        </li>
+
         <li>
           <Link to="/profile">Profile</Link>
         </li>

@@ -1,25 +1,28 @@
-import React, { useContext } from "react";
-import { CartContext } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function OrderSummary() {
-  const { cartItems, clearCart } = useContext(CartContext);
+  const location = useLocation();
+  const { selectedItems } = location.state || { selectedItems: [] }; // Get the selected items passed from Checkout
   const navigate = useNavigate();
 
-  const total = cartItems.reduce((acc, item) => acc + item.price, 0);
+  // Calculate total based on selected items
+  const total = selectedItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   const handleGoHome = () => {
-    clearCart(); // Clear the cart after purchase
-    navigate("/");
+    navigate("/"); // Redirect to home
   };
 
   return (
     <div>
       <h1>Order Summary</h1>
       <ul>
-        {cartItems.map((item) => (
+        {selectedItems.map((item) => (
           <li key={item.id}>
-            {item.name} - {item.price}
+            {item.name} - ${item.price.toFixed(2)} x {item.quantity}
           </li>
         ))}
       </ul>

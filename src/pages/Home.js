@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
-import products from "../data/products"; // Your product data
+
 import { useNavigate } from "react-router-dom";
 import React, { useContext } from "react"; // Correct import statement for useContext
 
 import { UserContext } from "../context/UserContext"; // Make sure the path is correct
+import { ProductContext } from "../context/ProductContext";
 
 function Home() {
   const navigate = useNavigate();
   const { user, logout } = useContext(UserContext);
+  const { products } = useContext(ProductContext);
   return (
     <div>
       <div>

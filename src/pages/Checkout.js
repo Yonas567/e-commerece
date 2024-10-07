@@ -1,19 +1,23 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Checkout() {
-  const { cartItems } = useContext(CartContext);
+  const { state } = useLocation();
+  const { selectedItems } = state;
+  const { clearCart } = useContext(CartContext);
   const navigate = useNavigate();
 
-  const total = cartItems.reduce((acc, item) => acc + item.price, 0);
+  const total = selectedItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // For now, we'll just navigate to an order summary after "payment"
-    navigate("/order-summary");
+    // Clear the cart after placing order
+    clearCart();
+    navigate("/order-summary", { state: { selectedItems } });
   };
 
   return (

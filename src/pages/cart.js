@@ -1,16 +1,43 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { CartContext } from "../context/CartContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Cart() {
-  const { cartItems, removeFromCart, increaseQuantity, decreaseQuantity } =
-    useContext(CartContext);
+  const {
+    cartItems,
+    removeFromCart,
+    increaseQuantity,
+    decreaseQuantity,
+    clearCart,
+  } = useContext(CartContext);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const navigate = useNavigate(); // Use useNavigate instead of useHistory
 
   // Calculate total by considering the quantity of each item
   const total = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
+
+  // Handle selecting/unselecting an item
+  const handleSelectItem = (item) => {
+    if (selectedItems.includes(item)) {
+      setSelectedItems(selectedItems.filter((i) => i.id !== item.id));
+    } else {
+      setSelectedItems([...selectedItems, item]);
+    }
+  };
+
+  // Proceed to Checkout function
+  const handleProceedToCheckout = () => {
+    if (selectedItems.length > 0) {
+      // Push only the selected items to the checkout page
+      navigate("/checkout", { state: { selectedItems } }); // Use navigate instead of history.push
+    } else {
+      alert("Please select at least one product to proceed to checkout.");
+    }
+    clearCart();
+  };
 
   return (
     <div>
@@ -22,6 +49,16 @@ function Cart() {
           <ul>
             {cartItems.map((item) => (
               <li key={item.id}>
+                <input
+                  type="checkbox"
+                  checked={selectedItems.includes(item)}
+                  onChange={() => handleSelectItem(item)}
+                />
+                <img
+                  src={item.imageUrl}
+                  alt={item.name}
+                  style={{ width: "50px", height: "50px" }}
+                />
                 {item.name} - ${item.price.toFixed(2)} x {item.quantity}
                 <button onClick={() => increaseQuantity(item.id)}>+</button>
                 <button onClick={() => decreaseQuantity(item.id)}>-</button>
@@ -29,9 +66,9 @@ function Cart() {
               </li>
             ))}
           </ul>
-          <h2>Total: ${total.toFixed(2)}</h2>{" "}
+          <h2>Total: ${total.toFixed(2)}</h2>
           {/* Total with quantity considered */}
-          <Link to="/checkout">Proceed to Checkout</Link>
+          <button onClick={handleProceedToCheckout}>Proceed to Checkout</button>
         </div>
       )}
     </div>
