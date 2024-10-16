@@ -13,7 +13,7 @@ function OrderSummary() {
   );
 
   const handleGoHome = () => {
-    navigate("/"); // Redirect to home
+    navigate("/", { state: { selectedItems } });
   };
 
   return (

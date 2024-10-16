@@ -15,8 +15,14 @@ function Checkout() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Clear the cart after placing order
+
+    // Save selectedItems to localStorage
+    localStorage.setItem("orderHistory", JSON.stringify(selectedItems));
+
+    // Clear the cart after placing the order
     clearCart();
+
+    // Navigate to order-summary page and pass state
     navigate("/order-summary", { state: { selectedItems } });
   };
 
