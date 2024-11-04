@@ -1,51 +1,66 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 
 function OrderHistory() {
-  const location = useLocation();
-  const [orderHistory, setOrderHistory] = useState([]);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    // Retrieve order history from localStorage
-    const storedOrders = JSON.parse(localStorage.getItem("orderHistory")) || [];
-    setOrderHistory(storedOrders);
+    const savedOrders = JSON.parse(localStorage.getItem("orderHistory")) || [];
+    setOrders(savedOrders);
   }, []);
-
-  // If there’s a new order, update the order history
-  useEffect(() => {
-    if (location.state?.selectedItems) {
-      const newOrder = {
-        date: new Date().toLocaleDateString(),
-        items: location.state.selectedItems,
-      };
-
-      const updatedOrderHistory = [newOrder, ...orderHistory];
-      setOrderHistory(updatedOrderHistory);
-      localStorage.setItem("orderHistory", JSON.stringify(updatedOrderHistory));
-    }
-  }, [location.state, orderHistory]);
 
   return (
     <div>
       <h1>Order History</h1>
-      {orderHistory.length === 0 ? (
-        <p>No orders placed yet.</p>
+      {orders.length === 0 ? (
+        <p>No orders found.</p>
       ) : (
-        <ul>
-          {orderHistory.map((order, index) => (
-            <li key={index}>
-              <h3>Order Date: {order.date}</h3>
-              <ul>
-                {order.items.map((item, i) => (
-                  <li key={i}>
-                    <strong>{item.name}</strong> - ${item.price} x{" "}
-                    {item.quantity}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
+        <div>
+          {orders.map((order, orderIndex) => {
+            // Check if the order is an array of items or a single item
+            const items = Array.isArray(order) ? order : [order];
+
+            return (
+              <div
+                key={orderIndex}
+                style={{
+                  border: "1px solid #ddd",
+                  padding: "20px",
+                  marginBottom: "20px",
+                }}>
+                <h2>Order #{orderIndex + 1}</h2>
+                <p>
+                  <strong>Date:</strong> {new Date().toLocaleDateString()}
+                </p>
+                <p>
+                  <strong>Order Total:</strong> $
+                  {items
+                    .reduce((total, item) => total + item.price, 0)
+                    .toFixed(2)}
+                </p>
+                <ul>
+                  {items.map((item, itemIndex) => (
+                    <li
+                      key={itemIndex}
+                      style={{
+                        borderBottom: "1px solid #ddd",
+                        paddingBottom: "10px",
+                        marginBottom: "10px",
+                      }}>
+                      <h3>{item.name}</h3>
+                      <p>Price: ${item.price}</p>
+                      <p>Description: {item.description}</p>
+                      <img
+                        src={item.imageUrl}
+                        alt={item.name}
+                        style={{ width: "100px" }}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );

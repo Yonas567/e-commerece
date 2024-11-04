@@ -16,8 +16,15 @@ function Checkout() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Save selectedItems to localStorage
-    localStorage.setItem("orderHistory", JSON.stringify(selectedItems));
+    // Retrieve existing orders from localStorage
+    const existingOrders =
+      JSON.parse(localStorage.getItem("orderHistory")) || [];
+
+    // Combine existing orders with new selectedItems
+    const updatedOrders = [...existingOrders, ...selectedItems];
+
+    // Save updatedOrders to localStorage
+    localStorage.setItem("orderHistory", JSON.stringify(updatedOrders));
 
     // Clear the cart after placing the order
     clearCart();
