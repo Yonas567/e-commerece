@@ -6,7 +6,7 @@ function UserProfile() {
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
-  if (!user) {
+  if (user) {
     navigate("/login");
     return null;
   }
